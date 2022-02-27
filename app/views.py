@@ -8,7 +8,7 @@ import os
 from app import app
 from flask import render_template, request, redirect, url_for, flash, session, abort
 from werkzeug.utils import secure_filename
-
+from .forms import UploadForm
 
 ###
 # Routing for your application.
@@ -32,15 +32,26 @@ def upload():
         abort(401)
 
     # Instantiate your form class
+    form = UploadForm()
+    if request.method == 'GET':
+        return render_template('upload.html', form=form)
 
     # Validate file upload on submit
     if request.method == 'POST':
         # Get file data and save to your uploads folder
+        if form.validate_on_submit():
 
-        flash('File Saved', 'success')
-        return redirect(url_for('home'))
+            image = request.files['file']
 
-    return render_template('upload.html')
+            fileob= secure_filename(image.filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], fileob))
+            testpath = os.path.join(app.config['UPLOAD_FOLDER'], fileob)
+            print ("The test path is: ", testpath)
+        
+            flash('File Saved', 'success')
+            return redirect(url_for('home'))
+
+    return render_template('upload.html', form=form)
 
 
 @app.route('/login', methods=['POST', 'GET'])
