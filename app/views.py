@@ -45,9 +45,7 @@ def upload():
 
             fileob= secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], fileob))
-            testpath = os.path.join(app.config['UPLOAD_FOLDER'], fileob)
-            print ("The test path is: ", testpath)
-        
+            
             flash('File Saved', 'success')
             return redirect(url_for('home'))
 
