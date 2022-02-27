@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block css %} <link rel="stylesheet" href="{{url_for('static', filename='css/app.css')}}"/>{% endblock %}
+{% block main %}
+
+<div class="photogrid">
+    {% for filepath in filelst %}
+    {% if filepath.split('.')[-1].lower() in ['png', 'jpg', 'jpeg'] %}
+        <img src = "{{url_for('get_image', filename=filepath)}}"/>
+    
+    {% endif %}
+{% endfor %}
+</div>
+
+{% endblock %}
